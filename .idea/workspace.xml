@@ -6,11 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="a06439af-de88-4b21-9ccc-e0b59939f064" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/Operators.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/Operators.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/PredicateBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/PredicateBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/PredicateBuilderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/PredicateBuilderTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/StringUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/StringUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -40,8 +52,14 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="io.github.marcopotok.jpb" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\milac\IdeaProjects\PredicateBuilder\src\test\java\io\github\marcopotok\jpb" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="io.github.marcopotok.jpb.Operators" />
     </key>
   </component>
   <component name="RunManager" selected="JUnit.All in PredicateBuilder">
@@ -118,5 +136,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PredicateBuilder$All_in_PredicateBuilder.ic" NAME="All in PredicateBuilder Coverage Results" MODIFIED="1661763211326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
