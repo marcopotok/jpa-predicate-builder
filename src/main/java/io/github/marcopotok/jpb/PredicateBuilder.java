@@ -25,14 +25,6 @@ public class PredicateBuilder<T> {
     private static final String WILDCARD_REQUEST = "\\*";
     private static final String WILDCARD_DB = "%";
 
-    private static final Operator<Object> EQUALS = (value, path, cb) -> cb.equal(path, value);
-    private static final Operator<String> EQUALS_UPPER_CASE = (value, path, cb) -> cb.equal(cb.upper(path), value);
-    private static final Operator<Object> NOT_EQUALS = (value, path, cb) -> cb.notEqual(path, value);
-    private static final Operator<Collection<?>> IN = (values, path, cb) -> path.in(values);
-    private static final Operator<Collection<?>> NOT_IN = (values, path, cb) -> path.in(values).not();
-    private static final Operator<?> IS_NULL = (values, path, cb) -> path.isNull();
-    private static final Operator<?> NOT_NULL = (values, path, cb) -> path.isNotNull();
-    private static final Operator<String> LIKE_UPPER_CASE = (value, path, cb) -> cb.like(cb.upper(path), value);
     private static final PredicateContext<?> DISJUNCTION = (root, query, cb) -> cb.disjunction();
     private static final PredicateContext<?> CONJUNCTION = (root, query, cb) -> cb.conjunction();
 
@@ -93,7 +85,7 @@ public class PredicateBuilder<T> {
     }
 
     public <U> PredicateBuilder<T> withProperty(String name, U value) {
-        addPredicateContextIfHasValue(name, EQUALS, value);
+        addPredicateContextIfHasValue(name, Operators.EQUALS, value);
         return this;
     }
 
@@ -106,7 +98,8 @@ public class PredicateBuilder<T> {
     }
 
     public <U extends String> PredicateBuilder<T> withPropertyIgnoreCase(String name, U value) {
-        addPredicateContextIfHasValue(name, EQUALS_UPPER_CASE, value != null ? value.toUpperCase(Locale.ROOT) : null);
+        addPredicateContextIfHasValue(name, Operators.EQUALS_UPPER_CASE,
+                value != null ? value.toUpperCase(Locale.ROOT) : null);
         return this;
     }
 
@@ -115,12 +108,18 @@ public class PredicateBuilder<T> {
     }
 
     public <U> PredicateBuilder<T> withPropertyNot(String name, U value) {
-        addPredicateContextIfHasValue(name, NOT_EQUALS, value);
+        addPredicateContextIfHasValue(name, Operators.NOT_EQUALS, value);
+        return this;
+    }
+
+    public <U extends String> PredicateBuilder<T> withPropertyNotIgnoreCase(String name, U value) {
+        addPredicateContextIfHasValue(name, Operators.NOT_EQUALS_UPPER_CASE,
+                value != null ? value.toUpperCase(Locale.ROOT) : null);
         return this;
     }
 
     public PredicateBuilder<T> withPropertyIn(String name, Collection<?> values) {
-        addPredicateContextIfHasValue(name, IN, values);
+        addPredicateContextIfHasValue(name, Operators.IN, values);
         return this;
     }
 
@@ -133,23 +132,23 @@ public class PredicateBuilder<T> {
     }
 
     public PredicateBuilder<T> withPropertyNotIn(String name, Collection<?> values) {
-        addPredicateContextIfHasValue(name, NOT_IN, values);
+        addPredicateContextIfHasValue(name, Operators.NOT_IN, values);
         return this;
     }
 
     public PredicateBuilder<T> withNullProperty(String name) {
-        addPredicateContext(name, IS_NULL, null);
+        addPredicateContext(name, Operators.IS_NULL, null);
         return this;
     }
 
     public PredicateBuilder<T> withNotNullProperty(String name) {
-        addPredicateContext(name, NOT_NULL, null);
+        addPredicateContext(name, Operators.NOT_NULL, null);
         return this;
     }
 
     public PredicateBuilder<T> withPropertyLikeIgnoreCase(String propertyName, String propertyValue) {
         if (propertyValue != null) {
-            addPredicateContextIfHasValue(propertyName, LIKE_UPPER_CASE,
+            addPredicateContextIfHasValue(propertyName, Operators.LIKE_UPPER_CASE,
                     propertyValue.replaceAll(WILDCARD_REQUEST, WILDCARD_DB).toUpperCase(Locale.ROOT));
         }
         return this;
@@ -157,7 +156,7 @@ public class PredicateBuilder<T> {
 
     public PredicateBuilder<T> withPropertyStartingWith(String propertyName, String propertyValue) {
         String likeValue = propertyValue == null ? WILDCARD_DB : propertyValue.toUpperCase(Locale.ROOT) + WILDCARD_DB;
-        addPredicateContextIfHasValue(propertyName, LIKE_UPPER_CASE, likeValue);
+        addPredicateContextIfHasValue(propertyName, Operators.LIKE_UPPER_CASE, likeValue);
         return this;
     }
 

@@ -59,6 +59,12 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void withPropertyNotIgnoreCase() {
+        Predicate predicate = build(builder.withPropertyNotIgnoreCase("attribute", "value"));
+        assertStringMatches("upper(attribute) not equal VALUE", predicate.toString());
+    }
+
+    @Test
     void withPropertyIn() {
         Predicate predicate = build(builder.withPropertyIn("attribute", List.of("v1", "v2")));
         assertStringMatches("attribute in v1,v2", predicate.toString());
@@ -125,7 +131,7 @@ class PredicateBuilderTest {
     }
 
     @Test
-    void duplicatedJoinShouldResultAsSingleJoin() {
+    void duplicatedJoinsShouldResultAsSingleJoin() {
         FakeRoot<Object> root = new FakeRoot<>("");
         builder.withProperty("attribute.name", "name")
                 .withProperty("attribute.surname", "surname")

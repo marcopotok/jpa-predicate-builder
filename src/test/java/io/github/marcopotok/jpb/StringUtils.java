@@ -16,6 +16,6 @@ final class StringUtils {
     static void assertStringMatchesAndNotBlank(String expected, String actual) {
         assertNotNull(expected);
         assertFalse(expected.isBlank(), "Expected should not be blank");
-        assertEquals(expected.trim(), actual.trim());
+        assertStringMatches(expected, actual);
     }
 }
