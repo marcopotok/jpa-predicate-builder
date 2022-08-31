@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a06439af-de88-4b21-9ccc-e0b59939f064" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/Operators.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/Operators.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/PredicateBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/marcopotok/jpb/PredicateBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/PredicateBuilderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/PredicateBuilderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/StringUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/github/marcopotok/jpb/StringUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +131,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update pom info" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PredicateBuilder$All_in_PredicateBuilder.ic" NAME="All in PredicateBuilder Coverage Results" MODIFIED="1661763211326" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
