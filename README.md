@@ -1,19 +1,19 @@
 # JPA Predicate Builder
 
-Lightweight layer on top of Jakarta Persistence for easy query construction in Java.
+A lightweight layer on top of Jakarta Persistence for easy query construction in Java.
 
 # Project Description
 
-Writing query on for java application faces many challenges, mainly cleanness of code, maintainability and performances. This project aims to address all three with a simple builder created on top of Jakarta Persistence apis.
-Other libraries already exists, but usually make the integration difficult and not always they work with other libraries (eg. Lombok). In this case we wanted a library with no extra dependencies and ready to go.
+Writing query on for java application faces many challenges, mainly cleanness of code, maintainability and performances. This project aims to address all three of these with a simple builder created on top of Jakarta Persistence APIs.
+Other libraries already exists, but usually make the integration difficult and not always they work with other libraries (e.g. Lombok). In this case we wanted a library with no extra dependencies and ready to go.
 
-key features:
+Key features:
 
-- predicate concatenation
+- predicates concatenation with a builder style
 - works seamlessly with jpa specifications
 - implementation agnostic
 - remove duplicated joins
-- easy eager fetch of related entities (prefetching)
+- easy fetch of related entities (prefetching)
 
 # How to install
 
@@ -44,12 +44,11 @@ class UserService {
         Root<User> root = query.from(User.class);
         query.where(PredicateBuilder.of(User.class).withProperty("name", name).build(root, query, criteriaBuilder));
         return session.createQuery(query).getResultList();
-
     }
 }
 ```
 ## Specification
-Another way to get the same result, only with specifications:
+Another way to get the same result with specifications:
 ```java
 import java.util.Collection;
 
@@ -68,7 +67,7 @@ class UserService {
 }
 ```
 ## Joins
-In order to filter by an attribute of a relation, use se dot notation. For example, if you want to find all the orders of a user, you can write:
+In order to filter by an attribute of a relation, use the dot notation. For example, if you want to find all the orders of a user, you can write:
 ```java
 import java.util.Collection;
 
@@ -109,7 +108,7 @@ class OrderService {
     }
 }
 ```
-In this case the engine will perform a fetch on "_user_, _user.nested_, _user.nested.deep_, _user.other_ and _user.other.deep_". Note that the fetch with the _user_ entity is **not** duplicated.
+In this case the engine will perform a fetch on _user_, _user.nested_, _user.nested.deep_, _user.other_ and _user.other.deep_. Note that the fetch with the _user_ entity is **not** duplicated.
 # Limitations and further improvements
 
 Current limitation and possible future improvements:
