@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Fetch;
-import jakarta.persistence.criteria.FetchParent;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Root;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.FetchParent;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 
 class DefaultPrefetchEngine implements PrefetchEngine {
     private static final Pattern NESTED_ATTRIBUTES_MATCHER = Pattern.compile("^\\[(.*)]$");

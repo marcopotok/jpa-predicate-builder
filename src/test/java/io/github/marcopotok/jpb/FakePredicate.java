@@ -3,9 +3,9 @@ package io.github.marcopotok.jpb;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Selection;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Selection;
 
 class FakePredicate implements Predicate {
 

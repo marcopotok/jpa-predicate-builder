@@ -1,7 +1,7 @@
 package io.github.marcopotok.jpb;
 
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 class FakePrefetchEngine implements PrefetchEngine {
 

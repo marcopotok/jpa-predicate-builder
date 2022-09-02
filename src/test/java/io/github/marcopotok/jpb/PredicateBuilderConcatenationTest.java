@@ -4,11 +4,10 @@ import static io.github.marcopotok.jpb.StringUtils.assertStringMatchesAndNotBlan
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import javax.persistence.criteria.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import jakarta.persistence.criteria.Predicate;
 
 class PredicateBuilderConcatenationTest {
 
