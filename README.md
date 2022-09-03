@@ -1,6 +1,6 @@
 # JPA Predicate Builder
 
-A lightweight layer on top of Javax Persistence for easy query construction in Java.
+A lightweight layer on top of JPA for easy query construction in Java.
 
 # Project Description
 
@@ -15,9 +15,17 @@ Key features:
 - remove duplicated joins
 - easy fetch of related entities (prefetching)
 
+## Versions and compatibility
+
+The JPA APIs were originally exposed under the package `javax.persistence` replaced in 2019 by the Jakarta's package `jakarta.persistence`. The Predicate Builder supports both versions of JPA APIs with the following versions:
+- **1.x.x**: Javax Persistence
+- **2.x.x**: Jakarta Persistence
+
+
+
 # How to install
 
-To install it is enough to add the dependency to your pom file.
+Just add the dependency to your pom file.
 
 # How to use
 

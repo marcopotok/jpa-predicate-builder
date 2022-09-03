@@ -6,22 +6,22 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.AbstractQuery;
-import javax.persistence.criteria.CollectionJoin;
-import javax.persistence.criteria.CommonAbstractCriteria;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ListJoin;
-import javax.persistence.criteria.MapJoin;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-import javax.persistence.criteria.SetJoin;
-import javax.persistence.criteria.Subquery;
-import javax.persistence.metamodel.EntityType;
+import jakarta.persistence.criteria.AbstractQuery;
+import jakarta.persistence.criteria.CollectionJoin;
+import jakarta.persistence.criteria.CommonAbstractCriteria;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.ListJoin;
+import jakarta.persistence.criteria.MapJoin;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.ParameterExpression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Selection;
+import jakarta.persistence.criteria.SetJoin;
+import jakarta.persistence.criteria.Subquery;
+import jakarta.persistence.metamodel.EntityType;
 
 class FakeCriteriaQuery implements CriteriaQuery<Object> {
 
