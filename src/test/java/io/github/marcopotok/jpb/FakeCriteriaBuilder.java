@@ -12,25 +12,25 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CollectionJoin;
-import javax.persistence.criteria.CompoundSelection;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ListJoin;
-import javax.persistence.criteria.MapJoin;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-import javax.persistence.criteria.SetJoin;
-import javax.persistence.criteria.Subquery;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CollectionJoin;
+import jakarta.persistence.criteria.CompoundSelection;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaUpdate;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.ListJoin;
+import jakarta.persistence.criteria.MapJoin;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.ParameterExpression;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Selection;
+import jakarta.persistence.criteria.SetJoin;
+import jakarta.persistence.criteria.Subquery;
 
 class FakeCriteriaBuilder implements CriteriaBuilder {
 
@@ -334,12 +334,27 @@ class FakeCriteriaBuilder implements CriteriaBuilder {
     }
 
     @Override
+    public Expression<Integer> sign(Expression<? extends Number> x) {
+        return null;
+    }
+
+    @Override
     public <N extends Number> Expression<N> neg(Expression<N> x) {
         return null;
     }
 
     @Override
     public <N extends Number> Expression<N> abs(Expression<N> x) {
+        return null;
+    }
+
+    @Override
+    public <N extends Number> Expression<N> ceiling(Expression<N> x) {
+        return null;
+    }
+
+    @Override
+    public <N extends Number> Expression<N> floor(Expression<N> x) {
         return null;
     }
 
@@ -420,6 +435,31 @@ class FakeCriteriaBuilder implements CriteriaBuilder {
 
     @Override
     public Expression<Double> sqrt(Expression<? extends Number> x) {
+        return null;
+    }
+
+    @Override
+    public Expression<Double> exp(Expression<? extends Number> x) {
+        return null;
+    }
+
+    @Override
+    public Expression<Double> ln(Expression<? extends Number> x) {
+        return null;
+    }
+
+    @Override
+    public Expression<Double> power(Expression<? extends Number> x, Expression<? extends Number> y) {
+        return null;
+    }
+
+    @Override
+    public Expression<Double> power(Expression<? extends Number> x, Number y) {
+        return null;
+    }
+
+    @Override
+    public <T extends Number> Expression<T> round(Expression<T> x, Integer n) {
         return null;
     }
 
@@ -690,6 +730,21 @@ class FakeCriteriaBuilder implements CriteriaBuilder {
 
     @Override
     public Expression<Time> currentTime() {
+        return null;
+    }
+
+    @Override
+    public Expression<LocalDate> localDate() {
+        return null;
+    }
+
+    @Override
+    public Expression<LocalDateTime> localDateTime() {
+        return null;
+    }
+
+    @Override
+    public Expression<LocalTime> localTime() {
         return null;
     }
 
