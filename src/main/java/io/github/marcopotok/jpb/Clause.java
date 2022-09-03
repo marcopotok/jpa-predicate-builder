@@ -11,15 +11,15 @@ public interface Clause {
 
     /**
      * Converts the clause to a {@link Predicate}
-     * @param criteriaBuilder
-     * @param pathProvider
+     * @param criteriaBuilder - must not be null
+     * @param pathProvider - must not be null
      * @return the predicate
      */
     Predicate toPredicate(CriteriaBuilder criteriaBuilder, PathProvider pathProvider);
 
     /**
      * Concatenates two clauses with a logic AND
-     * @param clause
+     * @param clause - can be null
      * @return the result clause
      */
     default Clause and(Clause clause) {
@@ -28,6 +28,7 @@ public interface Clause {
 
     /**
      * Concatenates two clauses with a logic OR
+     * @param clause - can be null
      * @return the result clause
      */
     default Clause or(Clause clause) {
