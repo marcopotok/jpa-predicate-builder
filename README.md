@@ -1,6 +1,6 @@
 # JPA Predicate Builder
 
-A lightweight layer on top of Jakarta Persistence for easy query construction in Java.
+A lightweight layer on top of Javax Persistence for easy query construction in Java.
 
 # Project Description
 
