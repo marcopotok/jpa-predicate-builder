@@ -10,7 +10,7 @@ Other libraries already exists, but usually make the integration difficult and d
 Key features:
 
 - predicates concatenation with a builder style
-- works seamlessly with jpa specifications
+- works seamlessly with Spring Data JPA `Specifications`
 - implementation agnostic
 - remove duplicated joins
 - easy fetch of related entities (prefetching)
@@ -109,6 +109,43 @@ class OrderService {
 }
 ```
 In this case the engine will perform a fetch on _user_, _user.nested_, _user.nested.deep_, _user.other_ and _user.other.deep_. Note that the fetch with the _user_ entity is **not** duplicated.
+
+## Complex example
+Often in REST API we need to expose multiple optional filters. In this case this builder comes handy because null (optional) values are handled natively.
+
+Let's assume we have a value object `OrderRequest` with the following optional fields: 
+- ids: `Collection<Long>`
+- type: `String`
+- userId: `Long`
+- fromDate: `Instant`
+- toDate: `Instant`
+
+The following code will generate the query we need:
+```java
+import io.github.marcopotok.jpb.PredicateBuilder;
+
+class OrderService {
+
+    private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    private Collection<Order> getOrdersOfUser(OrderRequest request) {
+        Specification<Order> specification = PredicateBuilder.of(Order.class)
+                .prefetch("user.profile")
+                .withPropertyIn("id", request.ids)
+                .withProperty("type", request.type)
+                .withProperty("user.id", request.userId)
+                .withPropertyAfterInclusive("date", request.fromDate)
+                .withPropertyBeforeInclusive("date", request.toDate)::build;
+        return orderRepository.findAll(specification);
+    }
+}
+```
+
+
 # Limitations and further improvements
 
 Current limitation and possible future improvements:
