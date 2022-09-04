@@ -4,8 +4,8 @@ A lightweight layer on top of Javax Persistence for easy query construction in J
 
 # Project Description
 
-Writing query on for java application faces many challenges, mainly cleanness of code, maintainability and performances. This project aims to address all three of these with a simple builder created on top of Jakarta Persistence APIs.
-Other libraries already exists, but usually make the integration difficult and not always they work with other libraries (e.g. Lombok). In this case we wanted a library with no extra dependencies and ready to go.
+Writing query for java applications faces many challenges, mainly cleanness of code, maintainability and performances. This project aims to address all three of these with a simple builder created on top of JPA APIs.
+Other libraries already exists, but usually make the integration difficult and don't always work with other libraries (e.g. Lombok). In this case we wanted a library with no extra dependencies and ready to go.
 
 Key features:
 
@@ -47,8 +47,8 @@ class UserService {
     }
 }
 ```
-## Specification
-Another way to get the same result with specifications:
+## Specification (Spring Data JPA)
+Another way to get the same result with Specifications:
 ```java
 import java.util.Collection;
 
