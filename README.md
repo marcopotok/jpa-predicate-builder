@@ -132,7 +132,7 @@ class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    private Collection<Order> getOrdersOfUser(OrderRequest request) {
+    private Collection<Order> getOrders(OrderRequest request) {
         Specification<Order> specification = PredicateBuilder.of(Order.class)
                 .prefetch("user.profile")
                 .withPropertyIn("id", request.ids)
