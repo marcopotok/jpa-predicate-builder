@@ -22,6 +22,7 @@ To install it is enough to add the dependency to your pom file.
 # How to use
 
 To create your predicate, start with one constructor or factory method available:
+
 ```java
 class UserService {
 
@@ -41,8 +42,11 @@ class UserService {
     }
 }
 ```
+
 ## Specification (Spring Data JPA)
+
 Another way to get the same result with Specifications:
+
 ```java
 class UserService {
 
@@ -58,8 +62,11 @@ class UserService {
     }
 }
 ```
+
 ## Joins
+
 In order to filter by an attribute of a relation, use the dot notation. For example, if you want to find all the orders of a user, you can write:
+
 ```java
 class OrderService {
 
@@ -75,8 +82,11 @@ class OrderService {
     }
 }
 ```
+
 ## Prefetch
+
 To avoid multiple queries with a lazy relationship with another entity, you can use the prefetch method.
+
 ```java
 class OrderService {
 
@@ -87,19 +97,20 @@ class OrderService {
     }
 
     private Collection<Order> getOrdersOfUser(String userId) {
-        Specification<Order> specification = PredicateBuilder.of(Order.class)
-                .prefetch("user.[nested.deep,other.deep]")
-                .withProperty("user.id", userId)::build;
+        Specification<Order> specification = PredicateBuilder.of(Order.class).prefetch("user.[nested.deep,other.deep]").withProperty("user.id", userId)::build;
         return orderRepository.findAll(specification);
     }
 }
 ```
+
 In this case the engine will perform a fetch on _user_, _user.nested_, _user.nested.deep_, _user.other_ and _user.other.deep_. Note that the fetch with the _user_ entity is **not** duplicated.
 
 ## Complex example
+
 With REST API it is often necessary to expose multiple optional filters. In this case the Predicate Builder is useful because null (optional) values are handled natively.
 
-Let's assume we have a value object `OrderRequest` with the following optional fields: 
+Let's assume we have a value object `OrderRequest` with the following optional fields:
+
 - ids: `Collection<Long>`
 - type: `String`
 - userId: `Long`
@@ -108,6 +119,7 @@ Let's assume we have a value object `OrderRequest` with the following optional f
 - toDate: `Instant`
 
 ### With Predicate Builder
+
 ```java
 class OrderService {
 
@@ -123,20 +135,14 @@ class OrderService {
         CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
 
-        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class)
-                .prefetch("user.profile")
-                .withPropertyIn("id", request.ids)
-                .withProperty("type", request.type)
-                .withProperty("user.id", request.userId)
-                .withPropertyLikeIgnoreCase("user.name", request.userName)
-                .withPropertyAfterInclusive("date", request.fromDate)
-                .withPropertyBeforeInclusive("date", request.toDate);
+        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class).prefetch("user.profile").withPropertyIn("id", request.ids).withProperty("type", request.type).withProperty("user.id", request.userId).withPropertyLikeIgnoreCase("user.name", request.userName).withPropertyAfterInclusive("date", request.fromDate).withPropertyBeforeInclusive("date", request.toDate);
 
         query.where(builder.build(root, query, criteriaBuilder));
         return session.createQuery(query).getResultList();
     }
 }
 ```
+
 ### Without Predicate Builder:
 
 ```java
@@ -167,8 +173,7 @@ class OrderService {
                 predicates.add((criteriaBuilder.equal(userJoin.get("id"), request.userId)));
             }
             if (request.userName != null) {
-                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")),
-                        request.userName.toUpperCase(Locale.ROOT))));
+                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")), request.userName.toUpperCase(Locale.ROOT))));
             }
         }
         if (request.fromDate != null) {
@@ -188,5 +193,6 @@ class OrderService {
 # Limitations and further improvements
 
 Current limitation and possible future improvements:
+
 - Only left joins -> possible auto detection
 - Add field checking at build time
