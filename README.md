@@ -23,12 +23,6 @@ To install it is enough to add the dependency to your pom file.
 
 To create your predicate, start with one constructor or factory method available:
 ```java
-import java.util.Collection;
-
-import io.github.marcopotok.jpb.PredicateBuilder;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 class UserService {
 
     private final EntityManager entityManager;
@@ -50,8 +44,6 @@ class UserService {
 ## Specification (Spring Data JPA)
 Another way to get the same result with Specifications:
 ```java
-import java.util.Collection;
-
 class UserService {
 
     private final UserRepository userRepository;
@@ -69,8 +61,6 @@ class UserService {
 ## Joins
 In order to filter by an attribute of a relation, use the dot notation. For example, if you want to find all the orders of a user, you can write:
 ```java
-import java.util.Collection;
-
 class OrderService {
 
     private final OrderRepository orderRepository;
@@ -88,10 +78,6 @@ class OrderService {
 ## Prefetch
 To avoid multiple queries with a lazy relationship with another entity, you can use the prefetch method.
 ```java
-import java.util.Collection;
-
-import io.github.marcopotok.jpb.PredicateBuilder;
-
 class OrderService {
 
     private final OrderRepository orderRepository;
@@ -111,40 +97,93 @@ class OrderService {
 In this case the engine will perform a fetch on _user_, _user.nested_, _user.nested.deep_, _user.other_ and _user.other.deep_. Note that the fetch with the _user_ entity is **not** duplicated.
 
 ## Complex example
-Often in REST API we need to expose multiple optional filters. In this case this builder comes handy because null (optional) values are handled natively.
+With REST API it is often necessary to expose multiple optional filters. In this case the Predicate Builder is useful because null (optional) values are handled natively.
 
 Let's assume we have a value object `OrderRequest` with the following optional fields: 
 - ids: `Collection<Long>`
 - type: `String`
 - userId: `Long`
+- userName: `String`
 - fromDate: `Instant`
 - toDate: `Instant`
 
-The following code will generate the query we need:
+### With Predicate Builder
 ```java
-import io.github.marcopotok.jpb.PredicateBuilder;
-
 class OrderService {
 
-    private final OrderRepository orderRepository;
+    private final EntityManager entityManager;
 
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderService(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     private Collection<Order> getOrders(OrderRequest request) {
-        Specification<Order> specification = PredicateBuilder.of(Order.class)
+        Session session = entityManager.unwrap(Session.class);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
+        Root<Order> root = query.from(Order.class);
+
+        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class)
                 .prefetch("user.profile")
                 .withPropertyIn("id", request.ids)
                 .withProperty("type", request.type)
                 .withProperty("user.id", request.userId)
+                .withPropertyLikeIgnoreCase("user.name", request.userName)
                 .withPropertyAfterInclusive("date", request.fromDate)
-                .withPropertyBeforeInclusive("date", request.toDate)::build;
-        return orderRepository.findAll(specification);
+                .withPropertyBeforeInclusive("date", request.toDate);
+
+        query.where(builder.build(root, query, criteriaBuilder));
+        return session.createQuery(query).getResultList();
     }
 }
 ```
+### Without Predicate Builder:
 
+```java
+class OrderService {
+
+    private final EntityManager entityManager;
+
+    public OrderService(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    private Collection<Order> getOrders(OrderRequest request) {
+        Session session = entityManager.unwrap(Session.class);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
+        Root<Order> root = query.from(Order.class);
+
+        List<Predicate> predicates = new LinkedList<>();
+        if (request.ids != null) {
+            predicates.add(root.get("id").in(request.ids));
+        }
+        if (request.type != null) {
+            predicates.add(criteriaBuilder.equal(root.get("type"), request.type));
+        }
+        if (request.userId != null || request.userName != null) {
+            Join<Object, Object> userJoin = root.join("user", JoinType.LEFT);
+            if (request.userId != null) {
+                predicates.add((criteriaBuilder.equal(userJoin.get("id"), request.userId)));
+            }
+            if (request.userName != null) {
+                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")),
+                        request.userName.toUpperCase(Locale.ROOT))));
+            }
+        }
+        if (request.fromDate != null) {
+            predicates.add((criteriaBuilder.greaterThanOrEqualTo(root.get("date"), request.fromDate)));
+        }
+        if (request.toDate != null) {
+            predicates.add((criteriaBuilder.lessThanOrEqualTo(root.get("date"), request.toDate)));
+        }
+        root.fetch("user", JoinType.LEFT).fetch("profile", JoinType.LEFT);
+        criteriaQuery.where(predicates.toArray(Predicate[]::new));
+
+        return session.createQuery(query).getResultList();
+    }
+}
+```
 
 # Limitations and further improvements
 
