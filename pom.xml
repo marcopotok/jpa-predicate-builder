@@ -22,6 +22,19 @@
             <url>http://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <name>Marco Potok</name>
+            <email>potok.marco@gmail.com</email>
+            <organization>marcopotok</organization>
+            <organizationUrl>https://github.com/marcopotok</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git://github.com/marcopotok/jpa-predicate-builder.git</connection>
+        <developerConnection>scm:git:git://github.com/marcopotok/jpa-predicate-builder.git</developerConnection>
+        <url>https://github.com/marcopotok/jpa-predicate-builder/tree/main</url>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>javax.persistence</groupId>
