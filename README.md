@@ -21,8 +21,11 @@ To install it is enough to add the dependency to your pom file.
 
 # How to use
 
-To create your predicate, start with one constructor or factory method available:
-
+To create your predicate, start with one constructor or factory method available, for example:
+```
+PredicateBuilder<User> builder = PredicateBuilder.of(User.class);
+```
+Let's see a more complete example:
 ```java
 class UserService {
 
