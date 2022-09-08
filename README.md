@@ -1,6 +1,9 @@
 # JPA Predicate Builder
 
+![Maven CI With Maven](https://github.com/marcopotok/jpa-predicate-builder/actions/workflows/maven.yml/badge.svg?branch=main)
+
 A lightweight layer on top of JPA for easy query construction in Java.
+
 
 # Project Description
 
@@ -29,8 +32,11 @@ Just add the dependency to your pom file.
 
 # How to use
 
-To create your predicate, start with one constructor or factory method available:
-
+To create your predicate, start with one constructor or factory method available, for example:
+```
+PredicateBuilder<User> builder = PredicateBuilder.of(User.class);
+```
+Let's see a more complete example:
 ```java
 class UserService {
 
@@ -105,7 +111,9 @@ class OrderService {
     }
 
     private Collection<Order> getOrdersOfUser(String userId) {
-        Specification<Order> specification = PredicateBuilder.of(Order.class).prefetch("user.[nested.deep,other.deep]").withProperty("user.id", userId)::build;
+        Specification<Order> specification = PredicateBuilder.of(Order.class)
+                .prefetch("user.[nested.deep,other.deep]")
+                .withProperty("user.id", userId)::build;
         return orderRepository.findAll(specification);
     }
 }
@@ -143,7 +151,14 @@ class OrderService {
         CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
 
-        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class).prefetch("user.profile").withPropertyIn("id", request.ids).withProperty("type", request.type).withProperty("user.id", request.userId).withPropertyLikeIgnoreCase("user.name", request.userName).withPropertyAfterInclusive("date", request.fromDate).withPropertyBeforeInclusive("date", request.toDate);
+        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class)
+                .prefetch("user.profile")
+                .withPropertyIn("id", request.ids)
+                .withProperty("type", request.type)
+                .withProperty("user.id", request.userId)
+                .withPropertyLikeIgnoreCase("user.name", request.userName)
+                .withPropertyAfterInclusive("date", request.fromDate)
+                .withPropertyBeforeInclusive("date", request.toDate);
 
         query.where(builder.build(root, query, criteriaBuilder));
         return session.createQuery(query).getResultList();
@@ -181,7 +196,8 @@ class OrderService {
                 predicates.add((criteriaBuilder.equal(userJoin.get("id"), request.userId)));
             }
             if (request.userName != null) {
-                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")), request.userName.toUpperCase(Locale.ROOT))));
+                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")),
+                        request.userName.toUpperCase(Locale.ROOT))));
             }
         }
         if (request.fromDate != null) {
