@@ -97,7 +97,9 @@ class OrderService {
     }
 
     private Collection<Order> getOrdersOfUser(String userId) {
-        Specification<Order> specification = PredicateBuilder.of(Order.class).prefetch("user.[nested.deep,other.deep]").withProperty("user.id", userId)::build;
+        Specification<Order> specification = PredicateBuilder.of(Order.class)
+                .prefetch("user.[nested.deep,other.deep]")
+                .withProperty("user.id", userId)::build;
         return orderRepository.findAll(specification);
     }
 }
@@ -135,7 +137,14 @@ class OrderService {
         CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
 
-        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class).prefetch("user.profile").withPropertyIn("id", request.ids).withProperty("type", request.type).withProperty("user.id", request.userId).withPropertyLikeIgnoreCase("user.name", request.userName).withPropertyAfterInclusive("date", request.fromDate).withPropertyBeforeInclusive("date", request.toDate);
+        PredicateBuilder<Order> builder = PredicateBuilder.of(Order.class)
+                .prefetch("user.profile")
+                .withPropertyIn("id", request.ids)
+                .withProperty("type", request.type)
+                .withProperty("user.id", request.userId)
+                .withPropertyLikeIgnoreCase("user.name", request.userName)
+                .withPropertyAfterInclusive("date", request.fromDate)
+                .withPropertyBeforeInclusive("date", request.toDate);
 
         query.where(builder.build(root, query, criteriaBuilder));
         return session.createQuery(query).getResultList();
@@ -173,7 +182,8 @@ class OrderService {
                 predicates.add((criteriaBuilder.equal(userJoin.get("id"), request.userId)));
             }
             if (request.userName != null) {
-                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")), request.userName.toUpperCase(Locale.ROOT))));
+                predicates.add((criteriaBuilder.like(criteriaBuilder.upper(userJoin.get("name")),
+                        request.userName.toUpperCase(Locale.ROOT))));
             }
         }
         if (request.fromDate != null) {
