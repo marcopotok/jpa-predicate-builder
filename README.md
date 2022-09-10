@@ -1,6 +1,7 @@
 # JPA Predicate Builder
 
-![Maven CI With Maven](https://github.com/marcopotok/jpa-predicate-builder/actions/workflows/maven.yml/badge.svg?branch=main)
+![Maven CI With Maven](https://github.com/marcopotok/jpa-predicate-builder/actions/workflows/maven.yml/badge.svg?branch=main&label=string)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.marcopotok/jpa-predicate-builder.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.marcopotok%22%20AND%20a:%22jpa-predicate-builder%22)
 
 A lightweight layer on top of Javax Persistence for easy query construction in Java.
 
