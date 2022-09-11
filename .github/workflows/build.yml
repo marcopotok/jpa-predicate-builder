@@ -22,9 +22,9 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          directory: ./site/jacoco
+          directory: ./target/site/jacoco
           fail_ci_if_error: true
-          files: ./site/jacoco/jacoco.xml
+          files: ./target/site/jacoco/jacoco.xml
           flags: unittests
           name: codecov-umbrella
           verbose: true
