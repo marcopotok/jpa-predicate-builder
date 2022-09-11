@@ -3,6 +3,7 @@
 ![Build](https://github.com/marcopotok/jpa-predicate-builder/actions/workflows/build.yml/badge.svg?branch=main&label=string)
 [![Maven Deploy](https://github.com/marcopotok/jpa-predicate-builder/actions/workflows/maven-deploy.yml/badge.svg)](https://github.com/marcopotok/jpa-predicate-builder/actions/workflows/maven-deploy.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.marcopotok/jpa-predicate-builder.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.marcopotok%22%20AND%20a:%22jpa-predicate-builder%22)
+[![codecov](https://codecov.io/gh/marcopotok/jpa-predicate-builder/branch/main/graph/badge.svg?token=IOJ9VPAENT)](https://codecov.io/gh/marcopotok/jpa-predicate-builder)
 
 A lightweight layer on top of Javax Persistence for easy query construction in Java.
 
