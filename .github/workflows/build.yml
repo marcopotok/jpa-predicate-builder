@@ -19,3 +19,13 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./site/jacoco
+          fail_ci_if_error: true
+          files: ./jacoco.xml
+          flags: unittests
+          name: codecov-umbrella
+          path_to_write_report: ./site/jacoco/codecov_report.txt
+          verbose: true
