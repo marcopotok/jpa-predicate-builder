@@ -24,7 +24,7 @@ jobs:
         with:
           directory: ./site/jacoco
           fail_ci_if_error: true
-          files: ./jacoco.xml
+          files: ./site/jacoco/jacoco.xml
           flags: unittests
           name: codecov-umbrella
           path_to_write_report: ./site/jacoco/codecov_report.txt
