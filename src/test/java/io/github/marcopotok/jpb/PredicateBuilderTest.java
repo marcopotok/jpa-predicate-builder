@@ -41,6 +41,11 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void canBuildAPredicateByTypedFactoryMethod() {
+        Assertions.assertDoesNotThrow(() -> build(PredicateBuilder.of(Object.class)));
+    }
+
+    @Test
     void noPredicatesShouldResultInConjunction() {
         Predicate predicate = build(builder);
         assertStringMatches("1=1", predicate.toString());
@@ -49,6 +54,12 @@ class PredicateBuilderTest {
     @Test
     void withProperty() {
         Predicate predicate = build(builder.withProperty("attribute", "value"));
+        assertStringMatches("attribute equal value", predicate.toString());
+    }
+
+    @Test
+    void andShouldConcatenate() {
+        Predicate predicate = build(builder.and().withProperty("attribute", "value"));
         assertStringMatches("attribute equal value", predicate.toString());
     }
 
@@ -95,6 +106,22 @@ class PredicateBuilderTest {
         Predicate predicate = build(builder.with(
                 (criteriaBuilder, pathProvider) -> criteriaBuilder.like(pathProvider.get("attribute").as(String.class),
                         "value")));
+        assertStringMatches("attribute like value", predicate.toString());
+    }
+
+    @Test
+    void withClauseAsType() {
+        Predicate predicate = build(builder.with(
+                (criteriaBuilder, pathProvider) -> criteriaBuilder.like(pathProvider.get("attribute", String.class),
+                        "value")));
+        assertStringMatches("attribute like value", predicate.toString());
+    }
+
+    @Test
+    void withClauseAsTypeWithRestriction() {
+        Predicate predicate = build(builder.with((criteriaBuilder, pathProvider) -> criteriaBuilder.like(
+                pathProvider.get("attribute", join -> criteriaBuilder.equal(join.get("attribute"), "value"),
+                        String.class), "value")));
         assertStringMatches("attribute like value", predicate.toString());
     }
 
