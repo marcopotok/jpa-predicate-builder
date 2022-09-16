@@ -78,7 +78,7 @@ public class PredicateBuilder<T> {
         return predicates.stream()
                 .map(predicateContext -> predicateContext.toPredicate(root, query, criteriaBuilder))
                 .reduce(criteriaBuilder::and)
-                .orElse(criteriaBuilder.conjunction());
+                .orElse(conjunction().toPredicate(root, query, criteriaBuilder));
     }
 
     /**
@@ -491,12 +491,12 @@ public class PredicateBuilder<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> PredicateContext<T> conjunction() {
+    private PredicateContext<T> conjunction() {
         return (PredicateContext<T>) CONJUNCTION;
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> PredicateContext<T> disjunction() {
+    private PredicateContext<T> disjunction() {
         return (PredicateContext<T>) DISJUNCTION;
     }
 }
