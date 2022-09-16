@@ -13,6 +13,10 @@ final class StringUtils {
         assertEquals(expected.trim(), actual.trim());
     }
 
+    static void assertStringMatches(Object expected, Object actual) {
+        assertStringMatches(expected.toString(), actual.toString());
+    }
+
     static void assertStringMatchesAndNotBlank(String expected, String actual) {
         assertNotNull(expected);
         assertFalse(expected.isBlank(), "Expected should not be blank");
