@@ -51,6 +51,13 @@ class PredicateBuilderConcatenationTest {
     }
 
     @Test
+    void concatenateNullBuilderShouldResultInOriginalPredicate() {
+        builder = builder.with((criteriaBuilder, pathProvider) -> new FakePredicate("this")).and(null);
+        expectedBuilder.with((criteriaBuilder, pathProvider) -> new FakePredicate("this"));
+        assertStringMatchesAndNotBlank(buildExpected().toString(), build().toString());
+    }
+
+    @Test
     void concatenationShouldPreserveOriginalDistinct() {
         builder.distinct().and(new PredicateBuilder<>());
         expectedBuilder.distinct();
