@@ -143,6 +143,14 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void withComposedAndNullClause() {
+        Clause clause = (criteriaBuilder, pathProvider) -> criteriaBuilder.like(
+                pathProvider.get("attribute").as(String.class), "value");
+        Predicate predicate = build(builder.with(clause.and(null)));
+        assertStringMatches("attribute like value", predicate.toString());
+    }
+
+    @Test
     void withComposedOrClause() {
         Clause clause = (criteriaBuilder, pathProvider) -> criteriaBuilder.like(
                 pathProvider.get("attribute").as(String.class), "value");
