@@ -18,7 +18,9 @@ import org.junit.jupiter.api.Test;
 class PredicateBuilderTest {
 
     private static final Object NO_VALUE = null;
+    private static final String EMPTY_STRING = "";
     private static final Collection<?> NO_VALUES = null;
+    private static final Collection<?> EMPTY_VALUES = List.of();
     private PredicateBuilder<Object> builder;
     private FakeCriteriaQuery query;
     private PrefetchEngine prefetchEngine;
@@ -41,6 +43,11 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void canBuildAPredicateByTypedFactoryMethod() {
+        Assertions.assertDoesNotThrow(() -> build(PredicateBuilder.of(Object.class)));
+    }
+
+    @Test
     void noPredicatesShouldResultInConjunction() {
         Predicate predicate = build(builder);
         assertStringMatches("1=1", predicate.toString());
@@ -49,6 +56,12 @@ class PredicateBuilderTest {
     @Test
     void withProperty() {
         Predicate predicate = build(builder.withProperty("attribute", "value"));
+        assertStringMatches("attribute equal value", predicate.toString());
+    }
+
+    @Test
+    void andShouldConcatenate() {
+        Predicate predicate = build(builder.and().withProperty("attribute", "value"));
         assertStringMatches("attribute equal value", predicate.toString());
     }
 
@@ -62,6 +75,12 @@ class PredicateBuilderTest {
     void withPropertyNotIgnoreCase() {
         Predicate predicate = build(builder.withPropertyNotIgnoreCase("attribute", "value"));
         assertStringMatches("upper(attribute) not equal VALUE", predicate.toString());
+    }
+
+    @Test
+    void withNoPropertyNotIgnoreCase() {
+        Predicate predicate = build(builder.withPropertyNotIgnoreCase("attribute", (String) NO_VALUE));
+        assertStringMatches("1=1", predicate.toString());
     }
 
     @Test
@@ -99,11 +118,41 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void withNullClause() {
+        Predicate predicate = build(builder.with(null));
+        assertStringMatches("1=1", predicate.toString());
+    }
+
+    @Test
+    void withClauseAsType() {
+        Predicate predicate = build(builder.with(
+                (criteriaBuilder, pathProvider) -> criteriaBuilder.like(pathProvider.get("attribute", String.class),
+                        "value")));
+        assertStringMatches("attribute like value", predicate.toString());
+    }
+
+    @Test
+    void withClauseAsTypeWithRestriction() {
+        Predicate predicate = build(builder.with((criteriaBuilder, pathProvider) -> criteriaBuilder.like(
+                pathProvider.get("attribute", join -> criteriaBuilder.equal(join.get("attribute"), "value"),
+                        String.class), "value")));
+        assertStringMatches("attribute like value", predicate.toString());
+    }
+
+    @Test
     void withClauseOperator() {
         Predicate predicate = build(builder.with("value",
                 input -> (criteriaBuilder, pathProvider) -> criteriaBuilder.like(
                         pathProvider.get("attribute").as(String.class), input)));
         assertStringMatches("attribute like value", predicate.toString());
+    }
+
+    @Test
+    void withNoValueClauseOperator() {
+        Predicate predicate = build(builder.with((String) NO_VALUE,
+                input -> (criteriaBuilder, pathProvider) -> criteriaBuilder.like(
+                        pathProvider.get("attribute").as(String.class), input)));
+        assertStringMatches("1=1", predicate.toString());
     }
 
     @Test
@@ -113,6 +162,14 @@ class PredicateBuilderTest {
         Predicate predicate = build(builder.with(clause.and(
                 (criteriaBuilder, pathProvider) -> criteriaBuilder.equal(pathProvider.get("other"), "alternative"))));
         assertStringMatches("attribute like value and other equal alternative", predicate.toString());
+    }
+
+    @Test
+    void withComposedAndNullClause() {
+        Clause clause = (criteriaBuilder, pathProvider) -> criteriaBuilder.like(
+                pathProvider.get("attribute").as(String.class), "value");
+        Predicate predicate = build(builder.with(clause.and(null)));
+        assertStringMatches("attribute like value", predicate.toString());
     }
 
     @Test
@@ -172,6 +229,23 @@ class PredicateBuilderTest {
     @Test
     void requiredPropertyNotPresentShouldResultInDisjunction() {
         Predicate predicate = build(builder.withProperty("name", "ignored")
+                .withRequiredProperty("required", (String) NO_VALUE)
+                .withPropertyIn("profiles", List.of(1)));
+        assertStringMatches("1=0", predicate.toString());
+    }
+
+    @Test
+    void requiredPropertyEmptyStringShouldResultInDisjunction() {
+        Predicate predicate = build(builder.withProperty("name", "ignored")
+                .withRequiredProperty("required", EMPTY_STRING)
+                .withPropertyIn("profiles", List.of(1)));
+        assertStringMatches("1=0", predicate.toString());
+    }
+
+    @Test
+    void requiredPropertyNotPresentShouldFreezePredicates() {
+        Predicate predicate = build(builder.withProperty("name", "ignored")
+                .withRequiredProperty("required", NO_VALUE)
                 .withRequiredProperty("required", NO_VALUE)
                 .withPropertyIn("profiles", List.of(1)));
         assertStringMatches("1=0", predicate.toString());
@@ -190,9 +264,23 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void withPropertyNullIgnoreCase() {
+        Predicate predicate = build(builder.withPropertyIgnoreCase("case", null));
+        assertStringMatches("1=1", predicate.toString());
+    }
+
+    @Test
     void requiredPropertyInNotPresentShouldResultInDisjunction() {
         Predicate predicate = build(builder.withProperty("name", "ignored")
                 .withRequiredPropertyIn("required", NO_VALUES)
+                .withPropertyIn("profiles", List.of(1)));
+        assertStringMatches("1=0", predicate.toString());
+    }
+
+    @Test
+    void requiredPropertyInEmptyShouldResultInDisjunction() {
+        Predicate predicate = build(builder.withProperty("name", "ignored")
+                .withRequiredPropertyIn("required", EMPTY_VALUES)
                 .withPropertyIn("profiles", List.of(1)));
         assertStringMatches("1=0", predicate.toString());
     }
@@ -231,6 +319,12 @@ class PredicateBuilderTest {
     void withPropertyStartingWith() {
         Predicate predicate = build(builder.withPropertyStartingWith("name", "n"));
         assertStringMatches("upper(name) like N%", predicate.toString());
+    }
+
+    @Test
+    void withNoPropertyStartingWith() {
+        Predicate predicate = build(builder.withPropertyStartingWith("name", (String) NO_VALUE));
+        assertStringMatches("upper(name) like %", predicate.toString());
     }
 
     @Test
