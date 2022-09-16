@@ -213,6 +213,15 @@ class PredicateBuilderTest {
     }
 
     @Test
+    void requiredPropertyNotPresentShouldFreezePredicates() {
+        Predicate predicate = build(builder.withProperty("name", "ignored")
+                .withRequiredProperty("required", NO_VALUE)
+                .withRequiredProperty("required", NO_VALUE)
+                .withPropertyIn("profiles", List.of(1)));
+        assertStringMatches("1=0", predicate.toString());
+    }
+
+    @Test
     void withRequiredPropertyIn() {
         Predicate predicate = build(builder.withRequiredPropertyIn("required", List.of("value")));
         assertStringMatches("required in value", predicate.toString());
