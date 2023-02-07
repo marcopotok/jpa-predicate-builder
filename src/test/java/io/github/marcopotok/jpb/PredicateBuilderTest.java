@@ -29,7 +29,7 @@ class PredicateBuilderTest {
     void setUp() {
         query = new FakeCriteriaQuery();
         prefetchEngine = new FakePrefetchEngine();
-        builder = new PredicateBuilder<>(prefetchEngine);
+        builder = new PredicateBuilder<>(PredicateBuilderOptions.builder().withPrefetchEngine(prefetchEngine).build());
     }
 
     @Test
