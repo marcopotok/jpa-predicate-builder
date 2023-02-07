@@ -5,7 +5,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.marcopotok/jpa-predicate-builder.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.marcopotok%22%20AND%20a:%22jpa-predicate-builder%22)
 [![codecov](https://codecov.io/gh/marcopotok/jpa-predicate-builder/branch/main/graph/badge.svg?token=IOJ9VPAENT)](https://codecov.io/gh/marcopotok/jpa-predicate-builder)
 
-A lightweight layer on top of Javax Persistence for easy query construction in Java.
+A lightweight layer on top of JPA for easy query construction in Java.
+
 
 # Project Description
 
@@ -20,9 +21,17 @@ Key features:
 - remove duplicated joins
 - easy fetch of related entities (prefetching)
 
+## Versions and compatibility
+
+The JPA APIs were originally exposed under the package `javax.persistence` replaced in 2019 by the Jakarta's package `jakarta.persistence`. The Predicate Builder supports both versions of JPA APIs with the following versions:
+- **1.x.x**: Javax Persistence
+- **2.x.x**: Jakarta Persistence
+
+
+
 # How to install
 
-To install it is enough to add the dependency to your pom file.
+Just add the dependency to your pom file.
 
 # How to use
 

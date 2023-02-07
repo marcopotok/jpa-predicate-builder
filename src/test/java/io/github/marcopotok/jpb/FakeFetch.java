@@ -5,12 +5,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.Fetch;
-import javax.persistence.criteria.FetchParent;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.criteria.Fetch;
+import jakarta.persistence.criteria.FetchParent;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.PluralAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 final class FakeFetch<X, Y> implements Fetch<X, Y> {
 
