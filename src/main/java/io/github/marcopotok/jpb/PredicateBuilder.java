@@ -32,21 +32,24 @@ public class PredicateBuilder<T> {
     private final Map<String, Join<?, T>> joinCache = new HashMap<>();
     private final Collection<String> prefetches = new LinkedList<>();
     private final PrefetchEngine prefetchEngine;
+    private final boolean isUniqueJoins;
 
     /**
      * Initialize a {@link PredicateBuilder} with default prefetch engine
      */
     public PredicateBuilder() {
-        this(new DefaultPrefetchEngine());
+        this(PredicateBuilderOptions.createDefault());
     }
 
     /**
      * Initialize a {@link PredicateBuilder} with custom prefetch engine
      *
-     * @param prefetchEngine - must not be null
+     * @param options - must not be null
      */
-    public PredicateBuilder(PrefetchEngine prefetchEngine) {
-        this.prefetchEngine = prefetchEngine;
+    public PredicateBuilder(PredicateBuilderOptions options) {
+        Objects.requireNonNull(options, "Options must not be null");
+        prefetchEngine = options.getPrefetchEngine();
+        isUniqueJoins = options.isJoinCacheIsEnabled();
     }
 
     /**
@@ -464,25 +467,28 @@ public class PredicateBuilder<T> {
 
     private From<?, T> getRelationPath(From<?, T> path, String[] split, Function<Join<?, ?>, Predicate> joinOn) {
         String currentPath = "";
+        From<?, T> fromPath = path;
         for (int i = 0; i < split.length - 1; i++) {
             String attributeName = split[i];
             currentPath += "." + attributeName;
-            path = getPath(currentPath, path, attributeName);
+            fromPath = getPath(currentPath, fromPath, attributeName);
         }
-        return addRestrictions(path, joinOn);
+        return addRestrictions(fromPath, joinOn);
     }
 
     private From<?, T> addRestrictions(From<?, T> path, Function<Join<?, ?>, Predicate> joinOn) {
         if (path instanceof Join && joinOn != null) {
             @SuppressWarnings("unchecked")
             Join<?, T> join = (Join<?, T>) path;
-            path = join.on(joinOn.apply(join));
+            return join.on(joinOn.apply(join));
         }
         return path;
     }
 
     private Join<?, T> getPath(String currentPath, From<?, T> path, String attributeName) {
-        return joinCache.computeIfAbsent(currentPath, ignored -> path.join(attributeName, JoinType.LEFT));
+        return isUniqueJoins ?
+                joinCache.computeIfAbsent(currentPath, ignored -> path.join(attributeName, JoinType.LEFT)) :
+                path.join(attributeName, JoinType.LEFT);
     }
 
     private void disjunct() {
