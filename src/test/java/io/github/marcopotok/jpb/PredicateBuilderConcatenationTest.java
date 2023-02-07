@@ -4,21 +4,26 @@ import static io.github.marcopotok.jpb.StringUtils.assertStringMatchesAndNotBlan
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+<<<<<<< Updated upstream
 import javax.persistence.criteria.Predicate;
 
+=======
+>>>>>>> Stashed changes
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.persistence.criteria.Predicate;
 
 class PredicateBuilderConcatenationTest {
 
     private PredicateBuilder<Object> builder;
     private FakeCriteriaQuery query;
-    private PrefetchEngine prefetchEngine;
+    private PredicateBuilderOptions options;
     private FakeRoot<Object> expectedRoot;
 
     private PredicateBuilder<Object> expectedBuilder;
     private FakeCriteriaQuery expectedQuery;
-    private PrefetchEngine expectedPrefetchEngine;
+    private PredicateBuilderOptions expectedOptions;
     private FakeRoot<Object> root;
 
     @BeforeEach
@@ -30,15 +35,15 @@ class PredicateBuilderConcatenationTest {
     private void setupBuilder() {
         root = new FakeRoot<>("");
         query = new FakeCriteriaQuery();
-        prefetchEngine = new FakePrefetchEngine();
-        builder = new PredicateBuilder<>(prefetchEngine);
+        options = PredicateBuilderOptions.builder().withPrefetchEngine(new FakePrefetchEngine()).build();
+        builder = new PredicateBuilder<>(options);
     }
 
     private void setupExpectedBuilder() {
         expectedRoot = new FakeRoot<>("");
         expectedQuery = new FakeCriteriaQuery();
-        expectedPrefetchEngine = new FakePrefetchEngine();
-        expectedBuilder = new PredicateBuilder<>(expectedPrefetchEngine);
+        expectedOptions = PredicateBuilderOptions.builder().withPrefetchEngine(new FakePrefetchEngine()).build();
+        expectedBuilder = new PredicateBuilder<>(expectedOptions);
     }
 
     @Test
@@ -89,7 +94,8 @@ class PredicateBuilderConcatenationTest {
         builder.prefetch("name").and(new PredicateBuilder<>().prefetch("surname"));
         expectedBuilder.prefetch("name").prefetch("surname");
         buildBoth();
-        assertStringMatchesAndNotBlank(expectedPrefetchEngine.toString(), prefetchEngine.toString());
+        assertStringMatchesAndNotBlank(expectedOptions.getPrefetchEngine().toString(),
+                options.getPrefetchEngine().toString());
     }
 
     private void buildBoth() {

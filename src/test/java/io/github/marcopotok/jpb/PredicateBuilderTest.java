@@ -7,13 +7,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+<<<<<<< Updated upstream
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 
+=======
+>>>>>>> Stashed changes
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
 
 class PredicateBuilderTest {
 
@@ -29,7 +36,7 @@ class PredicateBuilderTest {
     void setUp() {
         query = new FakeCriteriaQuery();
         prefetchEngine = new FakePrefetchEngine();
-        builder = new PredicateBuilder<>(prefetchEngine);
+        builder = new PredicateBuilder<>(PredicateBuilderOptions.builder().withPrefetchEngine(prefetchEngine).build());
     }
 
     @Test
