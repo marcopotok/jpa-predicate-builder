@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
+import javax.persistence.criteria.Join;
 
-import jakarta.persistence.criteria.Join;
+import org.junit.jupiter.api.Test;
 
 class PredicateBuilderOptionTest {
 
