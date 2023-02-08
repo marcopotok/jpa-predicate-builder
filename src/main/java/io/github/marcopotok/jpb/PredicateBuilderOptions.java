@@ -26,7 +26,7 @@ public class PredicateBuilderOptions {
         return prefetchEngine;
     }
 
-    static final class Builder {
+    public static final class Builder {
         private boolean joinCacheIsEnabled = true;
         private PrefetchEngine prefetchEngine = new DefaultPrefetchEngine();
 
