@@ -3,10 +3,10 @@ package io.github.marcopotok.jpb;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import javax.persistence.criteria.Predicate;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.persistence.criteria.Predicate;
 
 class ClauseCompositionTest {
 
